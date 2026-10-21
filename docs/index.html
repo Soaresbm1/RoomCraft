@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr" data-capture-mode="local">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#234d40" />
+    <title>RoomCraft · Photos de votre pièce</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./client.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none">
+            <path d="M7 27V13l11-6 11 6v14l-11 6-11-6Z" />
+            <path d="m7 13 11 6 11-6M18 19v14M12 10l11 6v8" />
+          </svg>
+        </div>
+        <div>
+          <strong>RoomCraft</strong>
+          <p>L’atelier, depuis votre téléphone</p>
+        </div>
+        <span class="local-badge">EN LOCAL</span>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">RELEVÉ PHOTOGRAPHIQUE</p>
+        <h1 id="page-title">Faites le tour<br />de votre pièce.</h1>
+        <p>
+          Photographiez les surfaces depuis plusieurs positions. Vos images arrivent dans l’atelier
+          ouvert sur votre ordinateur.
+        </p>
+      </section>
+
+      <section class="capture-card" aria-labelledby="capture-title">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">VOTRE SÉRIE DE PHOTOS</p>
+            <h2 id="capture-title">Une pièce, plusieurs points de vue</h2>
+          </div>
+          <div class="count" data-testid="phone-count">
+            <strong id="received-count">—</strong><span id="maximum-count">/ 32</span
+            ><small>reçues sur le PC</small>
+          </div>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div id="progress-fill"></div></div>
+        <p class="connection" id="connection-state">
+          <span class="connection-dot" aria-hidden="true"></span
+          ><span id="connection-text">Connexion à votre ordinateur…</span>
+        </p>
+
+        <button class="primary-button" id="capture-button" type="button" disabled>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M8 5 6.5 8H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2.5L16 5H8Z"
+            />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          Prendre une photo
+        </button>
+        <input
+          id="camera-input"
+          data-testid="phone-camera-input"
+          aria-label="Prendre une photo avec la caméra arrière"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          hidden
+        />
+        <button class="secondary-button" id="gallery-button" type="button" disabled>
+          Importer depuis la galerie
+        </button>
+        <input
+          id="gallery-input"
+          data-testid="phone-gallery-input"
+          aria-label="Choisir des photos dans la galerie"
+          type="file"
+          accept="image/*"
+          multiple
+          hidden
+        />
+        <p class="camera-note">
+          La caméra arrière est proposée sur les téléphones compatibles. Sinon, choisissez des
+          photos dans votre galerie.
+        </p>
+
+        <div class="status-box" id="status-box" role="status" aria-live="polite" aria-atomic="true">
+          <p id="status-text">Préparation de votre session…</p>
+        </div>
+        <button class="retry-button" id="retry-button" type="button" hidden>
+          Vérifier la connexion et le compteur
+        </button>
+        <p class="expiry" id="expiry-text"></p>
+        <button class="secondary-button" id="download-button" type="button" hidden>Télécharger les photos (ZIP)</button>
+        <a class="secondary-button atelier-link" id="atelier-link" href="./atelier/" hidden>Ouvrir l’atelier 2D / 3D</a>
+      </section>
+
+      <section class="guidance" aria-labelledby="guidance-title">
+        <div class="guidance-icon" aria-hidden="true">↗</div>
+        <div>
+          <h2 id="guidance-title">Bougez entre les prises de vue.</h2>
+          <p>
+            Visez 12 à 32 photos nettes qui se recouvrent. Montrez chaque mur, le sol et le plafond.
+            Tourner sur vous-même depuis un seul point ne suffit pas.
+          </p>
+        </div>
+      </section>
+
+      <section class="recent-section" id="recent-section" aria-labelledby="recent-title" hidden>
+        <div class="section-heading">
+          <h2 id="recent-title">Derniers envois confirmés</h2>
+          <span>JPEG</span>
+        </div>
+        <ol id="recent-photos" class="recent-photos"></ol>
+      </section>
+
+      <footer>
+        <p>
+          <strong>Gardez RoomCraft ouvert sur le PC.</strong> Votre téléphone et votre ordinateur
+          doivent rester sur le même Wi-Fi.
+        </p>
+        <p>
+          Les photos sont préparées en JPEG puis transmises à votre ordinateur. Cette liaison Wi-Fi
+          locale en HTTP n’est pas chiffrée : utilisez votre réseau de confiance et fermez la
+          session après les prises de vue.
+        </p>
+        <p class="footer-note">
+          La reconstruction et sa calibration par une mesure réelle se poursuivent sur l’ordinateur.
+          Ces prises de vue ne constituent pas un scan LiDAR ni un relevé exact.
+        </p>
+      </footer>
+      <noscript
+        >Activez JavaScript pour préparer et transmettre les photos à votre ordinateur.</noscript
+      >
+    </main>
+  </body>
+</html>
