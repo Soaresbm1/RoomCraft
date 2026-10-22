@@ -34,7 +34,12 @@ button:disabled {
   cursor: wait;
   opacity: 0.46;
 }
-.atelier-link { display:block; text-decoration:none; text-align:center; box-sizing:border-box; }
+.atelier-link {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
+}
 button:focus-visible {
   outline: 3px solid #8dbb9f;
   outline-offset: 4px;
@@ -220,7 +225,8 @@ button:focus-visible {
 .primary-button:not(:disabled):active {
   background: #356750;
 }
-.primary-button svg {
+.primary-button svg,
+.secondary-button svg {
   width: 20px;
   height: 20px;
   stroke: currentColor;
@@ -246,6 +252,73 @@ button:focus-visible {
   color: var(--muted);
   text-align: center;
   margin: 13px 5px 18px;
+}
+.scan-explanation,
+.scan-tip {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 12px 0 16px;
+}
+.live-scan {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  max-width: 590px;
+  margin: auto;
+  padding: max(12px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom));
+  background: var(--paper);
+  overflow: auto;
+}
+.viewfinder {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #15251f;
+  flex: 1;
+  min-height: 180px;
+}
+.viewfinder video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.scan-reticle {
+  position: absolute;
+  inset: 24%;
+  border: 1px solid #ffffff80;
+  border-radius: 16px;
+  pointer-events: none;
+}
+.scan-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 7px 9px;
+  color: #fff;
+  background: #153a2acc;
+  border-radius: 20px;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.scan-count {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  padding: 8px 11px;
+  color: white;
+  background: #153a2acc;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.scan-feedback {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 12px 0 0;
 }
 .status-box {
   background: #eef2e7;

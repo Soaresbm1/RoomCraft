@@ -7,8 +7,8 @@
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#234d40" />
     <title>RoomCraft · Photos de votre pièce</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <script src="./client.js" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20261022-scan" />
+    <script src="./client.js?v=20261022-scan" defer></script>
   </head>
   <body>
     <main>
@@ -52,7 +52,45 @@
           ><span id="connection-text">Connexion à votre ordinateur…</span>
         </p>
 
-        <button class="primary-button" id="capture-button" type="button" disabled>
+        <button class="primary-button" id="scan-start" type="button" disabled>
+          Scanner la pièce en direct
+        </button>
+        <section
+          class="live-scan"
+          id="live-scan"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Caméra du scan"
+          hidden
+        >
+          <div class="viewfinder">
+            <video
+              id="scan-video"
+              autoplay
+              muted
+              playsinline
+              aria-label="Aperçu de la caméra arrière"
+            ></video>
+            <div class="scan-reticle" aria-hidden="true"></div>
+            <span class="scan-badge">CAPTURE AUTOMATIQUE</span>
+            <span class="scan-count" id="scan-count">0 / 32 vues</span>
+          </div>
+          <p class="scan-feedback" id="scan-feedback" role="status" aria-live="polite">
+            Ouverture de la caméra…
+          </p>
+          <p class="scan-tip">
+            Avancez lentement autour de la pièce, en gardant une partie de la vue précédente.
+            Montrez aussi les angles, le sol et le plafond.
+          </p>
+          <button class="primary-button" id="scan-stop" type="button">Terminer le scan</button>
+        </section>
+        <p class="scan-explanation" id="scan-explanation">
+          La caméra reste ouverte et les vues sont prises automatiquement pendant votre déplacement.
+          Autorisez la caméra lorsque le navigateur le demande. Les images servent à la
+          reconstruction sur PC ; aucune géométrie 3D n’est calculée en direct.
+        </p>
+
+        <button class="secondary-button" id="capture-button" type="button" disabled>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
             <path
               d="M8 5 6.5 8H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2.5L16 5H8Z"
@@ -94,8 +132,12 @@
           Vérifier la connexion et le compteur
         </button>
         <p class="expiry" id="expiry-text"></p>
-        <button class="secondary-button" id="download-button" type="button" hidden>Télécharger les photos (ZIP)</button>
-        <a class="secondary-button atelier-link" id="atelier-link" href="./atelier/" hidden>Ouvrir l’atelier 2D / 3D</a>
+        <button class="secondary-button" id="download-button" type="button" hidden>
+          Télécharger les photos (ZIP)
+        </button>
+        <a class="secondary-button atelier-link" id="atelier-link" href="./atelier/" hidden
+          >Ouvrir l’atelier 2D / 3D</a
+        >
       </section>
 
       <section class="guidance" aria-labelledby="guidance-title">
