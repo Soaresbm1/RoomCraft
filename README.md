@@ -4,7 +4,7 @@ Site Web compilé : scan caméra, reconstruction 3D locale sur le téléphone et
 
 https://soaresbm1.github.io/RoomCraft/
 
-Scanner la pièce, terminer le scan puis laisser le téléphone calculer. Aucun PC, ZIP ou serveur photo requis. Les relevés 3D sont sauvegardés dans le navigateur. Une hauteur sol-plafond mesurée est nécessaire pour des dimensions en mètres ; la précision réelle reste à vérifier. Les surfaces non observées ne sont pas inventées. Mode expérimental, sans garantie de reconstruction pour des murs sans texture ou réfléchissants.
+Scanner la pièce, terminer le scan puis laisser le téléphone calculer. Aucun PC, ZIP ou serveur photo requis. Les relevés 3D et les prochaines séries de photos sont enregistrés sur cet appareil lorsque le stockage local est disponible. Les anciennes séries peuvent être reprises sans ZIP ; une erreur de stockage conserve les nouvelles vues en mémoire et doit être résolue avant de fermer la page. Un diagnostic du calcul peut être copié sans photos. Une hauteur sol-plafond mesurée est nécessaire pour des dimensions en mètres ; la précision réelle reste à vérifier. Les surfaces non observées ne sont pas inventées. Mode expérimental, sans garantie de reconstruction pour des murs sans texture ou réfléchissants.
 
 GitHub Pages : branche `main`, dossier `/docs`. Aucune image ni aucun projet utilisateur ne figure dans ce dépôt. La reconstruction Python reste une option locale séparée.
 
