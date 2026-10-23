@@ -724,7 +724,7 @@
         link.href = './phone-3d.css?v=20261022-phone3d';
         document.head.append(link);
       }
-      const module = await import('./phone-3d.js?v=20261022-phone3d');
+      const module = await import('./phone-3d.js?v=20261023-phone3d-render');
       if (!disposed) await module.openMobileReconstruction(localPhotos, autoRun);
     } catch (error) {
       message(
@@ -849,7 +849,10 @@
       p.textContent = text;
       footer.append(p);
     }
-    const licences=document.createElement('a');licences.href='./THIRD_PARTY_NOTICES.txt';licences.textContent='Licences des composants';footer.append(licences);
+    const licences = document.createElement('a');
+    licences.href = './THIRD_PARTY_NOTICES.txt';
+    licences.textContent = 'Licences des composants';
+    footer.append(licences);
     message(
       'Prêt pour la première photo. Visez des vues nettes qui se recouvrent, en vous déplaçant.',
     );
