@@ -28,6 +28,8 @@
     scanFeedback: byId('scan-feedback'),
     scanExplanation: byId('scan-explanation'),
     scanCount: byId('scan-count'),
+    reconstruct: byId('reconstruct-phone'),
+    saved: byId('saved-phone'),
   };
   const params = new URLSearchParams(location.hash.slice(1));
   const session = params.get('session') || '';
@@ -64,6 +66,7 @@
     previousFrame = null,
     acceptedFrame = null;
   let lastCapture = 0;
+  let loading3D = false;
   const scanAvailable = isSecureContext && !!navigator.mediaDevices?.getUserMedia;
 
   class SessionError extends Error {}
@@ -93,6 +96,9 @@
     ui.captureButton.setAttribute('aria-busy', String(busy));
     if (ui.download)
       ui.download.disabled = busy || scanning || cameraStarting || !localPhotos.length;
+    ui.reconstruct.disabled =
+      busy || scanning || cameraStarting || loading3D || localPhotos.length < 3;
+    ui.saved.disabled = busy || scanning || cameraStarting || loading3D;
   };
   const stopSession = (text) => {
     stopScan();
@@ -202,7 +208,7 @@
           if (received >= maximum) {
             stopScan(
               localCapture
-                ? '32 vues enregistrées. La caméra est fermée. Téléchargez le ZIP pour poursuivre sur le PC.'
+                ? '32 vues enregistrées. La caméra est fermée. Choisissez « Reconstruire en 3D ici » pour calculer sur cet appareil.'
                 : '32 vues transmises. La caméra est fermée. Poursuivez dans l’atelier sur le PC.',
             );
             return;
@@ -666,7 +672,7 @@
       }
       if (localCapture)
         message(
-          `${confirmed} photo${confirmed > 1 ? 's' : ''} ajoutée${confirmed > 1 ? 's' : ''}. Téléchargez le ZIP avant de fermer cette page. Aucune image n’est envoyée à un serveur.`,
+          `${confirmed} photo${confirmed > 1 ? 's' : ''} ajoutée${confirmed > 1 ? 's' : ''}. Choisissez « Reconstruire en 3D ici » pour calculer sur cet appareil. Aucune image n’est envoyée à un serveur.`,
         );
       else
         message(
@@ -698,13 +704,40 @@
       ui.scanStop.focus();
     }
   });
-  ui.scanStop.addEventListener('click', () =>
+  ui.scanStop.addEventListener('click', () => {
     stopScan(
       localCapture
-        ? 'Scan arrêté, caméra fermée. Vos vues sont conservées. Téléchargez le ZIP pour poursuivre la reconstruction sur le PC.'
+        ? 'Scan arrêté, caméra fermée. Vos vues sont conservées. Vous pouvez calculer la 3D sur cet appareil.'
         : 'Scan arrêté, caméra fermée. Vos vues transmises restent dans l’atelier sur le PC.',
-    ),
-  );
+    );
+    if (localCapture && localPhotos.length >= 3 && !busy) void openPhone3D(true);
+  });
+  async function openPhone3D(autoRun) {
+    if (!localCapture || loading3D || busy || scanning || cameraStarting || disposed) return;
+    loading3D = true;
+    controls();
+    try {
+      if (!byId('phone3d-style')) {
+        const link = document.createElement('link');
+        link.id = 'phone3d-style';
+        link.rel = 'stylesheet';
+        link.href = './phone-3d.css?v=20261022-phone3d';
+        document.head.append(link);
+      }
+      const module = await import('./phone-3d.js?v=20261022-phone3d');
+      if (!disposed) await module.openMobileReconstruction(localPhotos, autoRun);
+    } catch (error) {
+      message(
+        'Le moteur 3D n’a pas pu être chargé. Vérifiez la connexion pour son premier chargement, puis réessayez. Vos photos sont conservées.',
+        true,
+      );
+    } finally {
+      loading3D = false;
+      controls();
+    }
+  }
+  ui.reconstruct.addEventListener('click', () => void openPhone3D(true));
+  ui.saved.addEventListener('click', () => void openPhone3D(false));
   if (!scanAvailable)
     ui.scanExplanation.textContent =
       'Le scan en direct nécessite HTTPS et un navigateur compatible. Ouvrez le site public dans Safari ou Chrome. Ici, utilisez « Prendre une photo » ou la galerie.';
@@ -790,27 +823,33 @@
     }
   });
   if (localCapture) {
+    ui.reconstruct.hidden = false;
+    ui.saved.hidden = false;
     ui.download.hidden = false;
     ui.atelier.hidden = false;
     byId('page-title').innerHTML = 'Faites le tour<br>de votre pièce.';
     document.querySelector('.intro > p:last-child').textContent =
-      'Ouvrez la caméra et déplacez-vous lentement : RoomCraft prend les vues automatiquement. La reconstruction à partir de ces images se poursuit sur votre PC.';
+      'Ouvrez la caméra, déplacez-vous lentement, puis terminez le scan pour calculer et explorer la 3D directement sur ce téléphone. Aucun PC ni ZIP nécessaire.';
+    if (scanAvailable)
+      ui.scanExplanation.textContent =
+        'La caméra reste ouverte et prend les vues automatiquement. Gardez la même orientation et ne zoomez pas. À la fin, le téléphone calcule la géométrie 3D ; la précision réelle reste à vérifier.';
     document.querySelector('.brand p').textContent = 'Votre pièce, depuis votre téléphone';
     document.querySelector('.count small').textContent = 'sur cet appareil';
     byId('recent-title').textContent = 'Dernières photos ajoutées';
     ui.expiry.textContent =
-      'Les photos restent uniquement dans cette page. Téléchargez le ZIP avant de la fermer ou de la recharger.';
+      'Calculez la 3D avant de fermer cette page. Les relevés calculés se sauvegardent dans ce navigateur. Le ZIP reste une option pour conserver les photos.';
     const footer = document.querySelector('footer');
     footer.replaceChildren();
     for (const text of [
-      'Aucune photo n’est envoyée à GitHub ou à un serveur. Le ZIP est créé directement sur votre téléphone.',
-      'Pour reconstruire : transférez le ZIP sur le PC, décompressez-le, ouvrez RoomCraft puis importez les JPEG dans « À partir de photos ».',
-      'GitHub Pages héberge cette interface ; la reconstruction Python reste sur le PC et nécessite une mesure réelle. Ces prises de vue ne constituent pas un relevé exact.',
+      'Aucune photo n’est envoyée à GitHub ou à un serveur. Les calculs 3D sont effectués sur cet appareil, après le scan.',
+      'Pour des dimensions en mètres, fournissez une hauteur sol-plafond réellement mesurée. Sans mesure, le résultat reste à échelle relative. Les zones cachées ou sans texture peuvent manquer.',
+      'Le calcul peut durer plusieurs minutes. Les relevés sauvegardés restent dans ce navigateur. Il s’agit d’une reconstruction expérimentale, pas d’un relevé exact ni d’un scan LiDAR.',
     ]) {
       const p = document.createElement('p');
       p.textContent = text;
       footer.append(p);
     }
+    const licences=document.createElement('a');licences.href='./THIRD_PARTY_NOTICES.txt';licences.textContent='Licences des composants';footer.append(licences);
     message(
       'Prêt pour la première photo. Visez des vues nettes qui se recouvrent, en vous déplaçant.',
     );

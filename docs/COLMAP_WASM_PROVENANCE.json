@@ -1,0 +1,32 @@
+{
+  "package": "colmap-wasm",
+  "version": "0.1.0",
+  "unofficial": true,
+  "npmIntegrity": "sha512-iD0jFB+WpCov+n9kuUXVJ8rCLqHj6OXEFK0q1LX/4cGlsvFB3dsekDl2nmeeOwWwaSrJuixbOGTr+Y3k5orDhw==",
+  "files": {
+    "LICENSE": "e4e836afd59de4ce8df3bab8f7e208ed6d324afa32f21f481749ada0571faabb",
+    "THIRD_PARTY_NOTICES.md": "2c00f9ccdd210a1e6cb94fac810648d3c9f59e2eaf0b31f16e2420c576bd1470",
+    "wasm/colmap.mjs": "0170d8a6ef23cddf5e58a007aa264cb362afad8ffe5b59e7fd97a93a4eff2af8",
+    "wasm/colmap.wasm": "2a57c2a710265a0105400be2353791940e2415082e59c5c2ac126e47f7235cad"
+  },
+  "repository": "https://github.com/obraia/colmap-wasm",
+  "upstream": "COLMAP 4.2.1",
+  "components": {
+    "COLMAP": "BSD-3-Clause",
+    "VLFeat": "BSD-2-Clause",
+    "Ceres": "BSD-3-Clause / Apache-2.0 / MIT notices",
+    "Eigen": "MPL-2.0, unmodified",
+    "glog": "BSD-3-Clause",
+    "PoseLib": "BSD-3-Clause",
+    "SQLite": "public domain",
+    "Emscripten": "MIT / University of Illinois-NCSA",
+    "Boost": "BSL-1.0"
+  },
+  "sourceForEigen": "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz",
+  "notes": [
+    "Upstream notices reviewed; no SuiteSparse, METIS, CUDA, GPL component or model weights listed in this build.",
+    "Unofficial binary distribution, not rebuilt or endorsed by the COLMAP project.",
+    "Original compiled engine kept unmodified; RoomCraft adds orchestration, CPU matching fallback and observed-plane fitting.",
+    "Eigen MPL-2.0 source and its license are available at the source link; full notices are distributed."
+  ]
+}
