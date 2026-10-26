@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#234d40" />
     <title>RoomCraft · Photos de votre pièce</title>
     <link rel="stylesheet" href="./styles.css?v=20261022-phone3d" />
-    <script src="./client.js?v=20261023-success-framing" defer></script>
+    <script src="./client.js?v=20261026-scan-retry" defer></script>
   </head>
   <body>
     <main>
@@ -79,9 +79,19 @@
             Ouverture de la caméra…
           </p>
           <p class="scan-tip">
-            Avancez lentement autour de la pièce, en gardant une partie de la vue précédente.
-            Montrez aussi les angles, le sol et le plafond.
+            1. Faites quelques pas le long des murs et gardez le même angle visible dans plusieurs
+            vues. 2. Inclinez progressivement vers le sol, puis le plafond, en gardant ce repère.
+            Gardez la même orientation, sans zoomer ; ne tournez pas seulement sur place.
           </p>
+          <figure id="scan-reference" hidden>
+            <img
+              id="scan-reference-image"
+              alt="Dernière vue conservée, repère visuel pour la suivante"
+            />
+            <figcaption>
+              Gardez une partie de cette vue. Ce repère ne mesure pas la couverture 3D.
+            </figcaption>
+          </figure>
           <button class="primary-button" id="scan-stop" type="button">Terminer le scan</button>
         </section>
         <p class="scan-explanation" id="scan-explanation">
